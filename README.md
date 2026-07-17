@@ -4,7 +4,7 @@
 
 RunFormance is an adaptive endurance coaching prototype that turns fragmented health, workout, race-goal, and environmental signals into one explainable daily recommendation.
 
-**Live demo:** https://stridewise-coach.dill75208.chatgpt.site
+**Live demo:** [RUNFORMANCE DEMO URL — TO BE ADDED]
 
 > This Build Week demo uses representative sample data. Apple Health, Garmin Connect, Strava, and environmental integrations are shown as the intended product experience; production OAuth, HealthKit, and live-data services are part of the implementation roadmap.
 
