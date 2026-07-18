@@ -6,7 +6,7 @@ RunFormance is an adaptive endurance coaching prototype that turns fragmented he
 
 **Live demo:** https://runformance.vercel.app
 
-> This Build Week demo uses representative sample data. Apple Health, Garmin Connect, Strava, and environmental integrations are shown as the intended product experience; production OAuth, HealthKit, and live-data services are part of the implementation roadmap.
+> This Beta Preview uses representative sample data. Apple Health, Garmin Connect, Strava, and environmental integrations are shown as the intended product experience; production OAuth, HealthKit, and live-data services are part of the implementation roadmap.
 
 ## The problem
 
@@ -83,3 +83,4 @@ RunFormance is designed around data minimization, granular consent, optional loc
 ## License
 
 This Build Week prototype is provided for judging and demonstration. Add an open-source license before making the repository public for general reuse.
+
