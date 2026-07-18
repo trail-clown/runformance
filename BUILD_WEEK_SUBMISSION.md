@@ -52,7 +52,7 @@ The next phase is live integration: native HealthKit and Health Connect clients,
 
 ## Links to complete before submission
 
-- Live demo: https://stridewise-coach.dill75208.chatgpt.site
+- Live demo: [RUNFORMANCE DEMO URL — TO BE ADDED]
 - Repository: [ADD GITHUB URL]
 - Public demo video: [ADD YOUTUBE URL]
 - Codex `/feedback` session ID: [ADD SESSION ID]
