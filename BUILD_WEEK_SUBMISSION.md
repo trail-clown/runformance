@@ -52,7 +52,7 @@ The next phase is live integration: native HealthKit and Health Connect clients,
 
 ## Links to complete before submission
 
-- Live demo: [RUNFORMANCE DEMO URL — TO BE ADDED]
+- Live demo: https://runformance.vercel.app
 - Repository: [ADD GITHUB URL]
 - Public demo video: [ADD YOUTUBE URL]
 - Codex `/feedback` session ID: [ADD SESSION ID]
