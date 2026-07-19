@@ -76,13 +76,79 @@ function ConnectionsView() {
   return <section className="feature-layout"><article className="card connection-list"><div className="eyebrow">Your data</div><h2>One view of your whole training life.</h2><p>Connect the services you choose. You control what is shared and can disconnect at any time.</p><Source mark="♥" name="Apple Health" detail="Sleep, HRV, workouts · synced 2 min ago"/><Source mark="G" name="Garmin Connect" detail="Training load, recovery, activities · synced 3 min ago"/><Source mark="▲" name="Strava" detail="Activities, routes, segments · synced 2 min ago"/><button className="add-source">＋ Add another source</button></article><article className="card privacy-card"><div className="card-head"><h3>Location & conditions</h3><span>Private by design</span></div><p>Use approximate location for hyperlocal workout guidance. Precise workout routes are never required.</p><label className="toggle-row"><span><b>Local conditions</b><small>Weather, AQI, smoke, heat, UV and pollen</small></span><input type="checkbox" checked={location} onChange={e=>setLocation(e.target.checked)}/><i></i></label><label className="toggle-row"><span><b>Rapid-change alerts</b><small>Notify me when conditions change before a workout</small></span><input type="checkbox" checked={alerts} onChange={e=>setAlerts(e.target.checked)}/><i></i></label><div className="location-preview"><b>Yuba City, California</b><span>Approximate location · updated 12 min ago</span><button>Change</button></div><div className="privacy-note">Your health and location data is used only to personalize recommendations. It is never sold.</div></article></section>;
 }
 
+function BetaWaitlist() {
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus("sending");
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    try {
+      const response = await fetch("https://formspree.io/f/xaqrovzz", {
+        method: "POST",
+        body: data,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (response.ok) {
+        form.reset();
+        setStatus("success");
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  if (status === "success") {
+    return (
+      <div className="beta-waitlist-success" role="status">
+        <strong>You're on the list!</strong>
+        <span>
+          Thanks for joining the RunFormance beta waitlist. We'll be in touch
+          with TestFlight access and next steps.
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <form className="beta-waitlist-form" onSubmit={handleSubmit}>
+      <input type="text" name="name" placeholder="Your name" required />
+      <input type="email" name="email" placeholder="Your email" required />
+      <input
+        type="hidden"
+        name="_subject"
+        value="New RunFormance Beta Waitlist Signup"
+      />
+      <button
+        className="beta-cta-button"
+        type="submit"
+        disabled={status === "sending"}
+      >
+        {status === "sending" ? "Joining..." : "Join the Beta Waitlist"}
+      </button>
+      {status === "error" && (
+        <p className="beta-waitlist-error" role="alert">
+          Something went wrong. Please try again.
+        </p>
+      )}
+    </form>
+  );
+}
 export default function Home() {
   const [theme,setTheme]=useState<Theme>(() => typeof window === "undefined" ? "warm" : (localStorage.getItem("runformance-theme") as Theme) || "warm"); const [view,setView]=useState<View>("Today"); const [modal,setModal]=useState(false);
   useEffect(()=>{ document.documentElement.dataset.theme=theme; localStorage.setItem("runformance-theme",theme); },[theme]);
   const subtitle=useMemo(()=>view==="Today"?"Your training, recovery, and conditions—working together.":view==="Plan"?"A plan that flexes without losing the goal.":view==="Coach"?"Ask why, change course, keep moving forward.":"Bring your signals together. Keep control of your data.",[view]);
   return <div className="app-shell">
     <aside><div className="brand"><span className="brand-mark">RF</span><b>RunFormance</b></div><nav>{nav.map(n=><button key={n.label} className={view===n.label?"active":""} onClick={()=>setView(n.label)}><i>{n.icon}</i>{n.label}</button>)}</nav><div className="sidebar-quote"><span>✦</span><p>Better runs.<br/>Better recovery.</p><small>Better health.</small></div><div className="profile"><span>AM</span><div><b>Alex Morgan</b><small>View profile</small></div><em>⌄</em></div></aside>
-    <main><div className="demo-banner"><span>Beta Preview</span><p>Representative sample data</p></div><section className="beta-cta"><div><span className="beta-cta-kicker">Early access</span><h2>Help shape RunFormance.</h2><p>Join a small group of runners helping test adaptive training, recovery insights, and smarter planning before the public release.</p><small>Free during beta &middot; iPhone/TestFlight &middot; Feedback encouraged</small></div><form className="beta-waitlist-form" action="https://formspree.io/f/xaqrovzz" method="POST"><input type="text" name="name" placeholder="Your name" required/><input type="email" name="email" placeholder="Your email" required/><input type="hidden" name="_subject" value="New RunFormance Beta Waitlist Signup"/><button className="beta-cta-button" type="submit">Join the Beta Waitlist</button></form></section><header><div><div className="mobile-brand"><span className="mobile-brand-mark">RF</span><b>RunFormance</b></div><h1>{view==="Today"?"Good morning, Alex":view}</h1><p>{subtitle}</p></div><div className="header-actions"><div className="theme-switcher" aria-label="Choose appearance">{themes.map(t=><button key={t.id} className={theme===t.id?"selected":""} onClick={()=>setTheme(t.id)} title={`${t.name} theme`}><i style={{background:t.color}}></i><span>{t.name}</span></button>)}</div><button className="bell" aria-label="Notifications">♢<i></i></button><span className="avatar">AM</span></div></header>
+    <main><div className="demo-banner"><span>Beta Preview</span><p>Representative sample data</p></div><section className="beta-cta"><div><span className="beta-cta-kicker">Early access</span><h2>Help shape RunFormance.</h2><p>Join a small group of runners helping test adaptive training, recovery insights, and smarter planning before the public release.</p><small>Free during beta &middot; iPhone/TestFlight &middot; Feedback encouraged</small></div><BetaWaitlist/></section><header><div><div className="mobile-brand"><span className="mobile-brand-mark">RF</span><b>RunFormance</b></div><h1>{view==="Today"?"Good morning, Alex":view}</h1><p>{subtitle}</p></div><div className="header-actions"><div className="theme-switcher" aria-label="Choose appearance">{themes.map(t=><button key={t.id} className={theme===t.id?"selected":""} onClick={()=>setTheme(t.id)} title={`${t.name} theme`}><i style={{background:t.color}}></i><span>{t.name}</span></button>)}</div><button className="bell" aria-label="Notifications">♢<i></i></button><span className="avatar">AM</span></div></header>
       {view==="Today"&&<TodayView onStart={()=>setModal(true)}/>} {view==="Plan"&&<PlanView/>} {view==="Coach"&&<CoachView/>} {view==="Connections"&&<ConnectionsView/>}
     </main>
     <nav className="mobile-nav">{nav.map(n=><button key={n.label} className={view===n.label?"active":""} onClick={()=>setView(n.label)}><i>{n.icon}</i><span>{n.label}</span></button>)}</nav>

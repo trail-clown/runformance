@@ -81,3 +81,8 @@
 .thanks-button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:12px;background:var(--accent);color:#10211b;text-decoration:none;font-weight:800}
 :root[data-theme="midnight"] .thanks-button,:root[data-theme="trail"] .thanks-button{color:#fff}
 @media(max-width:600px){.thanks-card{padding:30px 22px}.thanks-button{width:100%}}
+.beta-waitlist-success{display:flex;flex-direction:column;justify-content:center;gap:5px;min-height:96px;padding:18px 20px;border:1px solid color-mix(in srgb,var(--accent) 45%,var(--border));border-radius:14px;background:var(--accent-soft)}
+.beta-waitlist-success strong{font-size:20px;color:var(--text)}
+.beta-waitlist-success span{font-size:13px;line-height:1.5;color:var(--muted)}
+.beta-waitlist-error{grid-column:1/-1;margin:2px 0 0;font-size:12px;color:var(--text)}
+.beta-waitlist-form button:disabled{opacity:.7;cursor:wait}
