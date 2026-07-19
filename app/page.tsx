@@ -142,13 +142,152 @@ function BetaWaitlist() {
     </form>
   );
 }
+function BetaFeedback() {
+  const [open, setOpen] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus("sending");
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    try {
+      const response = await fetch("https://formspree.io/f/xojgdboz", {
+        method: "POST",
+        body: data,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (response.ok) {
+        form.reset();
+        setStatus("success");
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  return (
+    <>
+      <button className="beta-feedback-button" onClick={() => setOpen(true)}>
+        Beta Feedback
+      </button>
+
+      {open && (
+        <div className="feedback-backdrop" onMouseDown={() => setOpen(false)}>
+          <section
+            className="feedback-modal"
+            onMouseDown={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="feedback-title"
+          >
+            <button
+              className="feedback-close"
+              onClick={() => setOpen(false)}
+              aria-label="Close feedback form"
+            >
+              ×
+            </button>
+
+            {status === "success" ? (
+              <div className="feedback-success" role="status">
+                <span className="feedback-kicker">Thank you</span>
+                <h2 id="feedback-title">Feedback received.</h2>
+                <p>
+                  Thanks for helping shape RunFormance. Your feedback has been
+                  sent and will be reviewed for a future build.
+                </p>
+                <button
+                  className="primary"
+                  onClick={() => {
+                    setStatus("idle");
+                    setOpen(false);
+                  }}
+                >
+                  Done
+                </button>
+              </div>
+            ) : (
+              <>
+                <span className="feedback-kicker">Beta feedback</span>
+                <h2 id="feedback-title">Help improve RunFormance.</h2>
+                <p className="feedback-intro">
+                  Report a bug, share an idea, or tell us what could be better.
+                </p>
+
+                <form className="feedback-form" onSubmit={handleSubmit}>
+                  <label>
+                    Name
+                    <input type="text" name="name" placeholder="Your name" required />
+                  </label>
+
+                  <label>
+                    Email
+                    <input type="email" name="email" placeholder="Your email" required />
+                  </label>
+
+                  <label>
+                    Feedback type
+                    <select name="feedback_type" defaultValue="General feedback">
+                      <option>General feedback</option>
+                      <option>Bug report</option>
+                      <option>Feature request</option>
+                      <option>Design or usability</option>
+                      <option>Performance issue</option>
+                    </select>
+                  </label>
+
+                  <label>
+                    Message
+                    <textarea
+                      name="message"
+                      placeholder="Tell us what happened or what you'd like to see..."
+                      required
+                    />
+                  </label>
+
+                  <input
+                    type="hidden"
+                    name="_subject"
+                    value="New RunFormance Beta Feedback"
+                  />
+
+                  <button
+                    className="primary"
+                    type="submit"
+                    disabled={status === "sending"}
+                  >
+                    {status === "sending" ? "Sending..." : "Send Feedback"}
+                  </button>
+
+                  {status === "error" && (
+                    <p className="beta-waitlist-error" role="alert">
+                      Something went wrong. Please try again.
+                    </p>
+                  )}
+                </form>
+              </>
+            )}
+          </section>
+        </div>
+      )}
+    </>
+  );
+}
 export default function Home() {
   const [theme,setTheme]=useState<Theme>(() => typeof window === "undefined" ? "warm" : (localStorage.getItem("runformance-theme") as Theme) || "warm"); const [view,setView]=useState<View>("Today"); const [modal,setModal]=useState(false);
   useEffect(()=>{ document.documentElement.dataset.theme=theme; localStorage.setItem("runformance-theme",theme); },[theme]);
   const subtitle=useMemo(()=>view==="Today"?"Your training, recovery, and conditions—working together.":view==="Plan"?"A plan that flexes without losing the goal.":view==="Coach"?"Ask why, change course, keep moving forward.":"Bring your signals together. Keep control of your data.",[view]);
   return <div className="app-shell">
     <aside><div className="brand"><span className="brand-mark">RF</span><b>RunFormance</b></div><nav>{nav.map(n=><button key={n.label} className={view===n.label?"active":""} onClick={()=>setView(n.label)}><i>{n.icon}</i>{n.label}</button>)}</nav><div className="sidebar-quote"><span>✦</span><p>Better runs.<br/>Better recovery.</p><small>Better health.</small></div><div className="profile"><span>AM</span><div><b>Alex Morgan</b><small>View profile</small></div><em>⌄</em></div></aside>
-    <main><div className="demo-banner"><span>Beta Preview</span><p>Representative sample data</p></div><section className="beta-cta"><div><span className="beta-cta-kicker">Early access</span><h2>Help shape RunFormance.</h2><p>Join a small group of runners helping test adaptive training, recovery insights, and smarter planning before the public release.</p><small>Free during beta &middot; iPhone/TestFlight &middot; Feedback encouraged</small></div><BetaWaitlist/></section><header><div><div className="mobile-brand"><span className="mobile-brand-mark">RF</span><b>RunFormance</b></div><h1>{view==="Today"?"Good morning, Alex":view}</h1><p>{subtitle}</p></div><div className="header-actions"><div className="theme-switcher" aria-label="Choose appearance">{themes.map(t=><button key={t.id} className={theme===t.id?"selected":""} onClick={()=>setTheme(t.id)} title={`${t.name} theme`}><i style={{background:t.color}}></i><span>{t.name}</span></button>)}</div><button className="bell" aria-label="Notifications">♢<i></i></button><span className="avatar">AM</span></div></header>
+    <main><div className="beta-top-row"><div className="demo-banner"><span>Beta Preview</span><p>Representative sample data</p></div><BetaFeedback/></div><section className="beta-cta"><div><span className="beta-cta-kicker">Early access</span><h2>Help shape RunFormance.</h2><p>Join a small group of runners helping test adaptive training, recovery insights, and smarter planning before the public release.</p><small>Free during beta &middot; iPhone/TestFlight &middot; Feedback encouraged</small></div><BetaWaitlist/></section><header><div><div className="mobile-brand"><span className="mobile-brand-mark">RF</span><b>RunFormance</b></div><h1>{view==="Today"?"Good morning, Alex":view}</h1><p>{subtitle}</p></div><div className="header-actions"><div className="theme-switcher" aria-label="Choose appearance">{themes.map(t=><button key={t.id} className={theme===t.id?"selected":""} onClick={()=>setTheme(t.id)} title={`${t.name} theme`}><i style={{background:t.color}}></i><span>{t.name}</span></button>)}</div><button className="bell" aria-label="Notifications">♢<i></i></button><span className="avatar">AM</span></div></header>
       {view==="Today"&&<TodayView onStart={()=>setModal(true)}/>} {view==="Plan"&&<PlanView/>} {view==="Coach"&&<CoachView/>} {view==="Connections"&&<ConnectionsView/>}
     </main>
     <nav className="mobile-nav">{nav.map(n=><button key={n.label} className={view===n.label?"active":""} onClick={()=>setView(n.label)}><i>{n.icon}</i><span>{n.label}</span></button>)}</nav>
