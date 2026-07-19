@@ -31,3 +31,34 @@
 .beta-cta-button{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border-radius:12px;background:var(--accent);color:#10211b;text-decoration:none;font-weight:800;box-shadow:0 8px 22px color-mix(in srgb,var(--accent) 23%,transparent)}
 :root[data-theme="midnight"] .beta-cta-button,:root[data-theme="trail"] .beta-cta-button{color:#fff}
 @media(max-width:820px){.beta-cta{flex-direction:column;align-items:stretch;padding:18px 19px;margin-bottom:18px}.beta-cta-button{width:100%}}
+
+@media(max-width:820px){
+  .beta-cta{
+    padding:15px 16px;
+    gap:14px;
+    margin-bottom:14px;
+  }
+  .beta-cta-kicker{
+    margin-bottom:5px;
+    font-size:10px;
+  }
+  .beta-cta h2{
+    margin-bottom:6px;
+    font-size:24px;
+    line-height:1.08;
+  }
+  .beta-cta p{
+    font-size:13px;
+    line-height:1.45;
+  }
+  .beta-cta small{
+    margin-top:7px;
+    font-size:10px;
+    line-height:1.35;
+  }
+  .beta-cta-button{
+    min-height:44px;
+    padding:0 16px;
+    font-size:15px;
+  }
+}
