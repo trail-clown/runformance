@@ -72,3 +72,12 @@
   .beta-waitlist-form input{width:100%;min-height:44px}
   .beta-waitlist-form .beta-cta-button{width:100%}
 }
+.thanks-page{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 80% 10%,var(--accent-soft),transparent 30%),var(--bg);color:var(--text)}
+.thanks-card{width:min(620px,100%);padding:40px;border:1px solid var(--border);border-radius:24px;background:var(--surface);box-shadow:var(--shadow);text-align:center}
+.thanks-mark{width:64px;height:64px;margin:0 auto 20px;border-radius:16px;display:grid;place-items:center;background:var(--accent);color:#10211b;font-weight:900;font-style:italic;font-size:24px}
+.thanks-kicker{display:block;margin-bottom:10px;color:var(--good);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em}
+.thanks-card h1{margin:0 0 16px;font-size:clamp(34px,6vw,52px);letter-spacing:-.04em}
+.thanks-card p{margin:0 auto 26px;max-width:500px;color:var(--muted);line-height:1.65}
+.thanks-button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:12px;background:var(--accent);color:#10211b;text-decoration:none;font-weight:800}
+:root[data-theme="midnight"] .thanks-button,:root[data-theme="trail"] .thanks-button{color:#fff}
+@media(max-width:600px){.thanks-card{padding:30px 22px}.thanks-button{width:100%}}
