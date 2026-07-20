@@ -1,5 +1,15 @@
 
 # Local build/runtime files
 node_modules/
+.next/
+next-env.d.ts
+*.tsbuildinfo
 .sites-runtime/
+.vinext/
+.wrangler/
+dist/
 vinext-build.log
+
+# Server-side environment values
+.env*
+!.env.example

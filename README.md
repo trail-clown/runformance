@@ -26,6 +26,14 @@ RunFormance brings those signals together and explains its decision. It can reco
 - Interactive coaching conversation
 - Three appearance themes and responsive mobile navigation
 
+## Build Week Adaptive Decision Engine
+
+Commit `7a49b3e` is the documented pre-Build-Week baseline. The Build Week extension adds a real, isolated GPT-5.6 recommendation service while preserving the baseline Today, Plan, Coach, Connections, waitlist, and feedback functionality.
+
+On Today, runners can adjust representative recovery, training-load, and environmental values and select **Re-evaluate with GPT-5.6**. A server-only Next.js route validates the context, calls the OpenAI Responses API with `gpt-5.6` and medium reasoning, and returns a structured `keep`, `modify`, `delay`, or `recover` recommendation with an explanation.
+
+See [BUILD_WEEK_ADAPTIVE_ENGINE.md](BUILD_WEEK_ADAPTIVE_ENGINE.md) for the baseline comparison, API contract, privacy behavior, human/Codex responsibilities, and validation notes.
+
 ## Demo walkthrough
 
 1. On **Today**, review readiness, the recommended progression run, and the safest outdoor training window.
@@ -50,6 +58,8 @@ npm ci
 npm run dev
 ```
 
+To enable live GPT-5.6 re-evaluation, copy `.env.example` to `.env.local` and set `OPENAI_API_KEY`. The key is consumed only by the server route; never use a `NEXT_PUBLIC_` variable.
+
 Production validation:
 
 ```bash
@@ -66,6 +76,8 @@ npm run validate:artifact
 - CSS custom-property theme system
 - Local preference persistence for appearance
 - Representative in-browser data for a deterministic judging experience
+- Next.js server route using the OpenAI Responses API
+- GPT-5.6 Structured Outputs validated with Zod
 
 ## Production roadmap
 
@@ -73,7 +85,7 @@ npm run validate:artifact
 2. Approved Garmin Health API and Strava OAuth integrations
 3. Live weather, AQI, wildfire smoke, UV, and pollen providers
 4. Encrypted user profiles, consent records, and deletion/export controls
-5. GPT-5.6-backed recommendation service with structured safety guardrails
+5. Platform rate limiting, spend controls, and recommendation-quality evals
 6. TestFlight, Play closed testing, and validation with runners and coaches
 
 ## Privacy and safety

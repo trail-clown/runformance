@@ -29,5 +29,10 @@ test("renders development preview metadata", async () => {
     response.headers.get("content-type") ?? "",
     /^text\/html\b/i,
   );
-  assert.match(await response.text(), developmentPreviewMeta);
+  const html = await response.text();
+  assert.match(html, developmentPreviewMeta);
+  assert.match(html, /AI Adaptive Recommendation/i);
+  assert.match(html, /Powered by GPT-5\.6/i);
+  assert.match(html, /Re-evaluate with GPT-5\.6/i);
+  assert.match(html, /not medical advice/i);
 });

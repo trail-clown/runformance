@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { AdaptiveRecommendation } from "./_components/AdaptiveRecommendation";
 
 type Theme = "warm" | "midnight" | "trail";
 type View = "Today" | "Plan" | "Coach" | "Connections";
@@ -53,6 +54,7 @@ function TodayView({ onStart }: { onStart: () => void }) {
         <button className="text-button">View hourly outlook <span>→</span></button>
       </article>
     </section>
+    <AdaptiveRecommendation />
     <section className="lower-grid">
       <article className="card load-card"><div className="card-head"><div><h3>Weekly load</h3><p>Right where you want to be</p></div><b className="load-number">412 <small>/ 450–550</small></b></div><div className="chart-bars">{[38,58,47,66,82,44,73].map((v,i)=><div key={i}><span style={{height:`${v}%`}}></span><small>{["M","T","W","T","F","S","S"][i]}</small></div>)}</div><div className="chart-footer"><span><i></i> Current load</span><span><i></i> Target range</span><b>↑ 8% vs last week</b></div></article>
       <article className="card race-card"><div className="eyebrow">Goal race</div><h3>Santa Cruz Half</h3><div className="race-center"><Ring value={68} label="Plan complete" small /><div><strong>9 weeks</strong><span>September 20, 2026</span></div></div><div className="race-stats"><span><b>1:38:00</b><small>Goal</small></span><span><b>7:29/mi</b><small>Goal pace</small></span></div><button className="text-button">Open race plan <span>→</span></button></article>

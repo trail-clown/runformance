@@ -18,13 +18,13 @@ Runners have more data than ever but still make critical training decisions by m
 
 ## What it does
 
-RunFormance combines recovery indicators, recent training load, race goals, schedule constraints, and optional local conditions. It recommends what to do, when to do it, and why. The experience includes adaptive running and cross-training plans, readiness and recovery guidance, race-plan customization, weather and air-quality-aware timing, indoor alternatives, and a conversational coach.
+RunFormance combines recovery indicators, recent training load, race goals, schedule constraints, and optional local conditions. It recommends what to do, when to do it, and why. The Today experience now includes a real GPT-5.6 Adaptive Decision Engine: runners can change representative recovery and environmental inputs, request a live re-evaluation, and receive a structured keep, modify, delay, or recover decision with three signal-specific reasons.
 
 The prototype demonstrates connections to Apple Health, Garmin Connect, and Strava, alongside optional location-based weather, AQI, smoke, heat, humidity, wind, UV, and pollen guidance. During fire season, rapidly changing air quality can turn a morning outdoor workout into an unsafe afternoon session; RunFormance treats that change as a primary planning input rather than an afterthought.
 
 ## How we built it
 
-The project was designed and implemented with Codex and GPT-5.6. Codex helped turn the original product idea into a coherent information architecture, generate and compare three visual directions, implement the responsive React experience, build the adaptive planner and coaching interactions, debug and validate the production build, deploy the public demo, and prepare the judging materials.
+The project was designed and implemented with Codex and GPT-5.6. David made the core product and safety decisions: center the experience on one explainable daily action, keep location optional, preserve the existing prototype, use GPT-5.6 with medium reasoning, expose editable recovery and environmental inputs, and clearly separate educational guidance from medical advice. Codex inspected the repository and baseline, verified the current Responses API and installed SDK contract, implemented the isolated server route and responsive recommendation experience, added validation and tests, and documented the privacy and engineering boundaries.
 
 The prototype uses Next.js, React, TypeScript, Vinext/Vite, and a tokenized CSS theme system. Representative sample data creates a reliable judge experience without requiring access to personal health accounts.
 
@@ -41,6 +41,8 @@ The central design challenge was making many signals understandable without crea
 - Three full visual themes with consistent behavior
 - Responsive desktop and mobile experiences
 - Public, no-login demo with deterministic sample data
+- Live GPT-5.6 Responses API recommendation with validated Structured Outputs
+- Transparent input-change comparison, failure handling, and educational guidance disclaimer
 
 ## What we learned
 
@@ -48,7 +50,7 @@ Personalization is most useful when it reduces decisions, not when it adds more 
 
 ## What's next
 
-The next phase is live integration: native HealthKit and Health Connect clients, Garmin and Strava OAuth, environmental data providers, encrypted user profiles, and a GPT-5.6 recommendation service with structured safety checks. After a small runner-and-coach beta, RunFormance would move through TestFlight and Google Play closed testing.
+The next phase is live integration: native HealthKit and Health Connect clients, Garmin and Strava OAuth, environmental data providers, encrypted user profiles, platform rate limiting and spend controls, and representative recommendation-quality evals. After a small runner-and-coach beta, RunFormance would move through TestFlight and Google Play closed testing.
 
 ## Links to complete before submission
 
