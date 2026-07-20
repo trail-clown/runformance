@@ -20,6 +20,20 @@ const SAFETY_COOKIE = "runformance-safety-id";
 const SAFETY_COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 365;
 const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const DIAGNOSTIC_PREFIX = "[RunFormance Adaptive Engine]";
+
+type AdaptiveProcessingStage =
+  | "responses_api_request"
+  | "response_inspection"
+  | "structured_output_validation";
+
+type SafeDiagnosticMetadata = {
+  errorCategory?: string;
+  httpStatus?: number;
+  openaiErrorCode?: string;
+  openaiErrorType?: string;
+  openaiRequestId?: string;
+};
 
 const ADAPTIVE_DECISION_INSTRUCTIONS = `You are the RunFormance Adaptive Decision Engine.
 
@@ -105,6 +119,7 @@ export async function POST(request: NextRequest) {
 
     const refusal = findRefusal(response.output);
     if (refusal) {
+      logAdaptiveFailure("model_refusal", "response_inspection");
       return withSafetyCookie(
         errorResponse(
           "model_refusal",
@@ -117,6 +132,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (response.status === "incomplete") {
+      logAdaptiveFailure("incomplete_response", "response_inspection");
       return withSafetyCookie(
         errorResponse(
           "incomplete_response",
@@ -129,6 +145,14 @@ export async function POST(request: NextRequest) {
     }
 
     if (response.status !== "completed" || response.error) {
+      logAdaptiveFailure(
+        "openai_api_failure",
+        "response_inspection",
+        undefined,
+        response.error?.code
+          ? { openaiErrorCode: response.error.code }
+          : undefined,
+      );
       return withSafetyCookie(
         errorResponse(
           "openai_api_failure",
@@ -144,6 +168,10 @@ export async function POST(request: NextRequest) {
       response.output_parsed,
     );
     if (!recommendation.success) {
+      logAdaptiveFailure(
+        "structured_output_parse_failure",
+        "structured_output_validation",
+      );
       return withSafetyCookie(
         errorResponse(
           "structured_output_parse_failure",
@@ -169,6 +197,7 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     if (error instanceof APIConnectionTimeoutError) {
+      logAdaptiveFailure("request_timeout", "responses_api_request", error);
       return withSafetyCookie(
         errorResponse(
           "request_timeout",
@@ -181,6 +210,11 @@ export async function POST(request: NextRequest) {
     }
 
     if (error instanceof z.ZodError || error instanceof SyntaxError) {
+      logAdaptiveFailure(
+        "structured_output_parse_failure",
+        "structured_output_validation",
+        error,
+      );
       return withSafetyCookie(
         errorResponse(
           "structured_output_parse_failure",
@@ -193,6 +227,11 @@ export async function POST(request: NextRequest) {
     }
 
     if (error instanceof APIError || error instanceof OpenAIError) {
+      logAdaptiveFailure(
+        "openai_api_failure",
+        "responses_api_request",
+        error,
+      );
       return withSafetyCookie(
         errorResponse(
           "openai_api_failure",
@@ -204,6 +243,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    logAdaptiveFailure(
+      "openai_api_failure",
+      "responses_api_request",
+      error,
+    );
     return withSafetyCookie(
       errorResponse(
         "openai_api_failure",
@@ -214,6 +258,41 @@ export async function POST(request: NextRequest) {
       shouldSetSafetyCookie,
     );
   }
+}
+
+function logAdaptiveFailure(
+  diagnostic: AdaptiveDecisionErrorCode,
+  stage: AdaptiveProcessingStage,
+  error?: unknown,
+  metadata?: SafeDiagnosticMetadata,
+) {
+  const safeMetadata: SafeDiagnosticMetadata = { ...metadata };
+
+  if (error instanceof APIError) {
+    safeMetadata.errorCategory = error.constructor.name;
+    if (typeof error.status === "number") {
+      safeMetadata.httpStatus = error.status;
+    }
+    if (typeof error.code === "string") {
+      safeMetadata.openaiErrorCode = error.code;
+    }
+    if (typeof error.type === "string") {
+      safeMetadata.openaiErrorType = error.type;
+    }
+    if (typeof error.requestID === "string") {
+      safeMetadata.openaiRequestId = error.requestID;
+    }
+  } else if (error instanceof Error) {
+    safeMetadata.errorCategory = error.constructor.name;
+  } else if (error !== undefined) {
+    safeMetadata.errorCategory = "UnknownError";
+  }
+
+  console.error(DIAGNOSTIC_PREFIX, {
+    diagnostic,
+    stage,
+    ...safeMetadata,
+  });
 }
 
 function errorResponse(

@@ -127,6 +127,86 @@ test("reuses valid safety cookies and replaces missing or malformed values", asy
   }
 });
 
+test("keeps OpenAI API diagnostics out of client error responses", async () => {
+  const previousApiKey = process.env.OPENAI_API_KEY;
+  const originalFetch = globalThis.fetch;
+  const originalConsoleError = console.error;
+  const diagnosticLogs = [];
+  process.env.OPENAI_API_KEY = "sk-test-not-a-real-key";
+  globalThis.fetch = async (input, init) => {
+    const url =
+      typeof input === "string"
+        ? input
+        : input instanceof URL
+          ? input.href
+          : input.url;
+
+    if (url.startsWith("https://api.openai.com/")) {
+      return new Response(
+        JSON.stringify({
+          error: {
+            message: "Sensitive upstream detail",
+            type: "invalid_request_error",
+            code: "model_not_found",
+          },
+        }),
+        {
+          status: 403,
+          headers: {
+            "content-type": "application/json",
+            "x-request-id": "req_diagnostic_test",
+          },
+        },
+      );
+    }
+
+    return originalFetch(input, init);
+  };
+  console.error = (...args) => diagnosticLogs.push(args);
+
+  try {
+    const worker = await loadWorker("api-error-diagnostics");
+    const response = await requestRecommendation(worker);
+    const body = await response.json();
+
+    assert.equal(response.status, 502);
+    assert.deepEqual(body, {
+      error: {
+        code: "openai_api_failure",
+        message: "GPT-5.6 re-evaluation could not be completed. Please try again.",
+      },
+    });
+    assert.doesNotMatch(
+      JSON.stringify(body),
+      /model_not_found|invalid_request_error|req_diagnostic_test|Sensitive upstream detail/i,
+    );
+
+    assert.equal(diagnosticLogs.length, 1);
+    assert.equal(diagnosticLogs[0][0], "[RunFormance Adaptive Engine]");
+    assert.deepEqual(diagnosticLogs[0][1], {
+      diagnostic: "openai_api_failure",
+      stage: "responses_api_request",
+      errorCategory: "PermissionDeniedError",
+      httpStatus: 403,
+      openaiErrorCode: "model_not_found",
+      openaiErrorType: "invalid_request_error",
+      openaiRequestId: "req_diagnostic_test",
+    });
+    assert.doesNotMatch(
+      JSON.stringify(diagnosticLogs),
+      /Sensitive upstream detail|sk-test-not-a-real-key|Progression run|Build from conversational/i,
+    );
+  } finally {
+    console.error = originalConsoleError;
+    globalThis.fetch = originalFetch;
+    if (previousApiKey === undefined) {
+      delete process.env.OPENAI_API_KEY;
+    } else {
+      process.env.OPENAI_API_KEY = previousApiKey;
+    }
+  }
+});
+
 async function requestRecommendation(worker, safetyCookie) {
   const headers = { "content-type": "application/json" };
   if (safetyCookie) {
