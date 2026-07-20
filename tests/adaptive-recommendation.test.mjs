@@ -76,6 +76,7 @@ test("reuses valid safety cookies and replaces missing or malformed values", asy
   const previousApiKey = process.env.OPENAI_API_KEY;
   const originalFetch = globalThis.fetch;
   const capturedSafetyIdentifiers = [];
+  const capturedModels = [];
   process.env.OPENAI_API_KEY = "sk-test-not-a-real-key";
   globalThis.fetch = async (input, init) => {
     const url =
@@ -86,7 +87,9 @@ test("reuses valid safety cookies and replaces missing or malformed values", asy
           : input.url;
 
     if (url.startsWith("https://api.openai.com/")) {
-      capturedSafetyIdentifiers.push(JSON.parse(init.body).safety_identifier);
+      const requestBody = JSON.parse(init.body);
+      capturedSafetyIdentifiers.push(requestBody.safety_identifier);
+      capturedModels.push(requestBody.model);
       return openAISuccessResponse();
     }
 
@@ -100,6 +103,7 @@ test("reuses valid safety cookies and replaces missing or malformed values", asy
 
     assert.equal(firstResponse.status, 200);
     assert.match(firstCookie, UUID_PATTERN);
+    assert.equal(capturedModels[0], "gpt-5.6-sol");
 
     const repeatResponse = await requestRecommendation(worker, firstCookie);
     assert.equal(repeatResponse.status, 200);
@@ -156,7 +160,7 @@ function openAISuccessResponse() {
       created_at: 0,
       status: "completed",
       error: null,
-      model: "gpt-5.6",
+      model: "gpt-5.6-sol",
       output: [
         {
           id: "msg_test",

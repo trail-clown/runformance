@@ -59,7 +59,7 @@ export type AdaptiveDecisionErrorCode =
   | "request_timeout";
 
 export type AdaptiveDecisionSuccessResponse = {
-  model: "gpt-5.6";
+  model: "gpt-5.6-sol";
   recommendation: AdaptiveRecommendation;
 };
 

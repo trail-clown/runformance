@@ -30,7 +30,7 @@ RunFormance brings those signals together and explains its decision. It can reco
 
 Commit `7a49b3e` is the documented pre-Build-Week baseline. The Build Week extension adds a real, isolated GPT-5.6 recommendation service while preserving the baseline Today, Plan, Coach, Connections, waitlist, and feedback functionality.
 
-On Today, runners can adjust representative recovery, training-load, and environmental values and select **Re-evaluate with GPT-5.6**. A server-only Next.js route validates the context, calls the OpenAI Responses API with `gpt-5.6` and medium reasoning, and returns a structured `keep`, `modify`, `delay`, or `recover` recommendation with an explanation.
+On Today, runners can adjust representative recovery, training-load, and environmental values and select **Re-evaluate with GPT-5.6**. A server-only Next.js route validates the context, calls the OpenAI Responses API with the explicit `gpt-5.6-sol` model ID and medium reasoning, and returns a structured `keep`, `modify`, `delay`, or `recover` recommendation with an explanation.
 
 See [BUILD_WEEK_ADAPTIVE_ENGINE.md](BUILD_WEEK_ADAPTIVE_ENGINE.md) for the baseline comparison, API contract, privacy behavior, human/Codex responsibilities, and validation notes.
 

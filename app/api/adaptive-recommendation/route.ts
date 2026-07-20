@@ -14,7 +14,7 @@ import {
   type AdaptiveDecisionSuccessResponse,
 } from "@/lib/adaptive-decision";
 
-const MODEL = "gpt-5.6" as const;
+const MODEL = "gpt-5.6-sol" as const;
 const REQUEST_TIMEOUT_MS = 25_000;
 const SAFETY_COOKIE = "runformance-safety-id";
 const SAFETY_COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 365;

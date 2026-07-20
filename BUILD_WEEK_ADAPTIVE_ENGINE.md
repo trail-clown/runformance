@@ -20,7 +20,7 @@ Build Week adds a real GPT-5.6-powered Adaptive Decision Engine without replacin
 - an isolated `AI Adaptive Recommendation` component on Today
 - editable sample recovery, training-load, and outdoor-condition inputs
 - a same-origin Next.js POST route at `/api/adaptive-recommendation`
-- the OpenAI Responses API using model `gpt-5.6`
+- the OpenAI Responses API using the explicit model ID `gpt-5.6-sol`
 - explicit `reasoning.effort: "medium"`
 - Structured Outputs validated with Zod
 - an explainable decision of `keep`, `modify`, `delay`, or `recover`
@@ -36,7 +36,7 @@ The project directly depends on `openai@6.48.0` and `zod@4.4.3`. Before the API 
 ```ts
 openai.responses.parse(
   {
-    model: "gpt-5.6",
+    model: "gpt-5.6-sol",
     reasoning: { effort: "medium" },
     text: { format: zodTextFormat(schema, "adaptive_recommendation") },
   },
@@ -78,7 +78,7 @@ Product, design, and engineering decisions made by David include:
 
 - centering the product on one explainable daily decision
 - preserving the existing four-view prototype and visual system
-- using the explicit `gpt-5.6` model alias with medium reasoning
+- using the explicit `gpt-5.6-sol` model ID with medium reasoning
 - making recovery and environmental sample inputs editable
 - keeping the API key and safety identifier server-side/private
 - requiring transparent failure states and preservation of the last successful result
