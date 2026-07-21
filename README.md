@@ -98,5 +98,7 @@ RunFormance is designed around data minimization, granular consent, optional loc
 
 ## License
 
-This Build Week prototype is provided for judging and demonstration. Add an open-source license before making the repository public for general reuse.
+The RunFormance source code is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+The RunFormance name, logo, visual identity, and brand assets are not granted for reuse under the MIT License and remain reserved to the project owner.
 
