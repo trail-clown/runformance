@@ -24,9 +24,15 @@ The prototype demonstrates connections to Apple Health, Garmin Connect, and Stra
 
 ## How we built it
 
-The project was designed and implemented with Codex and GPT-5.6. David made the core product and safety decisions: center the experience on one explainable daily action, keep location optional, preserve the existing prototype, use GPT-5.6 with medium reasoning, expose editable recovery and environmental inputs, and clearly separate educational guidance from medical advice. Codex inspected the repository and baseline, verified the current Responses API and installed SDK contract, implemented the isolated server route and responsive recommendation experience, added validation and tests, and documented the privacy and engineering boundaries.
+David started creating RunFormance from scratch on July 18, 2026, during OpenAI Build Week (July 13–21, 2026). The initial Build Week prototype established the product concept and interface: Today, Plan, Coach, Connections, a beta waitlist, and feedback functionality. Commit `7a49b3e` records an early Build Week prototype checkpoint before the GPT-5.6 Adaptive Decision Engine was implemented.
+
+During the same Build Week period, David made the core product and safety decisions for the Adaptive Decision Engine: center the experience on one explainable daily action, keep location optional, preserve the initial prototype experience, use GPT-5.6 Sol with medium reasoning, expose editable recovery and environmental inputs, and clearly separate educational guidance from medical advice. Codex was used for this major implementation phase: it inspected the repository and planned the work, verified the Responses API and installed SDK contract, implemented the server-side integration, structured recommendation contract and interactive UI, added validation and tests, strengthened privacy and production diagnostics, and helped debug production issues. This does not imply that Codex built every part of the initial prototype.
+
+GPT-5.6 Sol now powers the live Adaptive Decision Engine in production. Production testing demonstrated `KEEP` under favorable conditions and `MODIFY` when environmental conditions such as AQI became unsafe.
 
 The prototype uses Next.js, React, TypeScript, Vinext/Vite, and a tokenized CSS theme system. Representative sample data creates a reliable judge experience without requiring access to personal health accounts.
+
+The repository evidence preserves the initial prototype checkpoint (`7a49b3e`), the Adaptive Decision Engine implementation (`4181b7c`), the explicit GPT-5.6 Sol update (`d9c8599`), privacy-safe production diagnostics (`d7d8caa`), and the production safety-identifier fix (`2b5d347`). The main Codex Session ID is documented separately in the Devpost submission.
 
 ## Challenges
 

@@ -1,10 +1,10 @@
 # RunFormance Build Week Adaptive Decision Engine
 
-## Build boundary
+## Build Week timeline and implementation boundary
 
-The documented pre-Build-Week baseline is commit `7a49b3e` (`Add beta feedback channel`). That commit is the comparison point for all work in this document.
+OpenAI Build Week runs July 13–21, 2026. RunFormance was started from scratch on July 18, 2026, during Build Week. The initial Build Week prototype established the RunFormance product concept and interface.
 
-At the baseline, RunFormance already included:
+Commit `7a49b3e` (`Add beta feedback channel`) is an early Build Week prototype checkpoint and the pre-Adaptive Decision Engine comparison point for this document. At that checkpoint, the prototype included:
 
 - Today, Plan, Coach, and Connections views
 - deterministic representative workout, readiness, recovery, load, and environmental data
@@ -13,9 +13,9 @@ At the baseline, RunFormance already included:
 - a simulated coaching conversation and device handoff
 - no production adaptive recommendation API and no OpenAI SDK dependency
 
-## Build Week additions
+## Adaptive Decision Engine additions
 
-Build Week adds a real GPT-5.6-powered Adaptive Decision Engine without replacing the existing prototype:
+Later in the same Build Week period, the project added a real GPT-5.6-powered Adaptive Decision Engine while preserving the initial prototype experience:
 
 - an isolated `AI Adaptive Recommendation` component on Today
 - editable sample recovery, training-load, and outdoor-condition inputs
@@ -77,7 +77,7 @@ Recommendations are educational fitness guidance, not diagnosis or treatment. Th
 Product, design, and engineering decisions made by David include:
 
 - centering the product on one explainable daily decision
-- preserving the existing four-view prototype and visual system
+- preserving the initial Build Week prototype's four-view experience and visual system during the Adaptive Decision Engine implementation
 - using the explicit `gpt-5.6-sol` model ID with medium reasoning
 - making recovery and environmental sample inputs editable
 - keeping the API key and safety identifier server-side/private
@@ -91,8 +91,21 @@ Codex was used to:
 - verify current official GPT-5.6 and Structured Outputs guidance
 - install and inspect the exact OpenAI Node SDK version and type declarations
 - implement the shared schemas, server route, client component, responsive styling, and tests
-- document the baseline boundary, architecture, privacy behavior, and validation evidence
+- document the prototype-checkpoint boundary, architecture, privacy behavior, and validation evidence
 - run TypeScript, lint, test, build, and diff validation without committing or pushing
+
+This describes Codex's role in the major Adaptive Decision Engine implementation, testing, privacy and security work, production debugging, and documentation. It does not claim that Codex created every part of the initial RunFormance prototype.
+
+## Build Week evidence
+
+- `7a49b3e` — initial Build Week prototype checkpoint before the Adaptive Decision Engine
+- `4181b7c` — add the GPT-5.6 Adaptive Decision Engine
+- `d9c8599` — use the explicit GPT-5.6 Sol model ID
+- `d7d8caa` — add privacy-safe production diagnostics
+- `2b5d347` — fix the production `safety_identifier` length
+- The main Codex Session ID is documented separately for the Devpost submission.
+
+Production testing demonstrated adaptive behavior, including `KEEP` under favorable conditions and `MODIFY` when environmental inputs such as AQI became unsafe. GPT-5.6 Sol powers the live Adaptive Decision Engine in production.
 
 ## Failure behavior
 
@@ -123,6 +136,8 @@ npm test
 npm run build
 git diff --stat 7a49b3e
 ```
+
+The final command compares the Adaptive Decision Engine work with the early Build Week prototype checkpoint; it is not a comparison with a project that existed before Build Week.
 
 The Vinext/Sites production build additionally requires the environment-provided `.openai/hosting.json` manifest referenced by `vite.config.ts`.
 

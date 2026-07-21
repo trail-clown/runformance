@@ -18,7 +18,7 @@ Target length: 2 minutes 20 seconds. Maximum permitted length: under 3 minutes.
 
 **Visual:** In AI Adaptive Recommendation, lower sleep and readiness or raise AQI, then select Re-evaluate with GPT-5.6. Show the returned decision, changed inputs, and three reasons.
 
-**Narration:** “For Build Week, RunFormance now uses the OpenAI Responses API with GPT-5.6 as a real adaptive decision engine. Change the runner’s recovery or outdoor conditions, and GPT-5.6 returns a validated keep, modify, delay, or recover decision—then shows exactly which inputs changed and why they matter. The guidance is educational, not medical advice.”
+**Narration:** “I started RunFormance from scratch during Build Week. After establishing the initial product experience, I used Codex to help build this live Adaptive Decision Engine with the OpenAI Responses API and GPT-5.6 Sol. Change the runner’s recovery or outdoor conditions, and it returns a validated keep, modify, delay, or recover decision—then shows exactly which inputs changed and why they matter. The guidance is educational, not medical advice.”
 
 ## 1:15–1:35 — Race planning
 
@@ -42,7 +42,7 @@ Target length: 2 minutes 20 seconds. Maximum permitted length: under 3 minutes.
 
 **Visual:** Cycle through the three themes, then return to Today.
 
-**Narration:** “I built RunFormance with Codex and GPT-5.6—from product structure and three visual systems to responsive implementation, interactions, debugging, deployment, and submission preparation. RunFormance: better runs, better recovery, better health.”
+**Narration:** “During Build Week, Codex helped me inspect and extend the prototype with the Adaptive Decision Engine, testing, privacy protections, and production debugging. GPT-5.6 Sol now powers the live decision engine. RunFormance: better runs, better recovery, better health.”
 
 ## Recording checklist
 

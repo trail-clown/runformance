@@ -28,11 +28,13 @@ RunFormance brings those signals together and explains its decision. It can reco
 
 ## Build Week Adaptive Decision Engine
 
-Commit `7a49b3e` is the documented pre-Build-Week baseline. The Build Week extension adds a real, isolated GPT-5.6 recommendation service while preserving the baseline Today, Plan, Coach, Connections, waitlist, and feedback functionality.
+RunFormance was started from scratch on July 18, 2026, during OpenAI Build Week (July 13–21, 2026). The initial Build Week prototype established the product concept and interface, including Today, Plan, Coach, Connections, the beta waitlist, and feedback functionality.
+
+Commit `7a49b3e` is an early Build Week prototype checkpoint before the Adaptive Decision Engine was implemented. The later Build Week implementation adds a real, isolated GPT-5.6 recommendation service while preserving that initial prototype experience.
 
 On Today, runners can adjust representative recovery, training-load, and environmental values and select **Re-evaluate with GPT-5.6**. A server-only Next.js route validates the context, calls the OpenAI Responses API with the explicit `gpt-5.6-sol` model ID and medium reasoning, and returns a structured `keep`, `modify`, `delay`, or `recover` recommendation with an explanation.
 
-See [BUILD_WEEK_ADAPTIVE_ENGINE.md](BUILD_WEEK_ADAPTIVE_ENGINE.md) for the baseline comparison, API contract, privacy behavior, human/Codex responsibilities, and validation notes.
+See [BUILD_WEEK_ADAPTIVE_ENGINE.md](BUILD_WEEK_ADAPTIVE_ENGINE.md) for the prototype-checkpoint comparison, API contract, privacy behavior, human/Codex responsibilities, and validation notes.
 
 ## Demo walkthrough
 
@@ -45,7 +47,7 @@ See [BUILD_WEEK_ADAPTIVE_ENGINE.md](BUILD_WEEK_ADAPTIVE_ENGINE.md) for the basel
 
 ## Built with Codex and GPT-5.6
 
-Codex and GPT-5.6 were used as a product and engineering collaborator across the full build: concept development, information architecture, three visual directions, responsive React implementation, interaction design, accessibility, copy, iterative debugging, validation, deployment, and submission preparation.
+David started RunFormance from scratch during Build Week and established the initial product concept and interface. During the same Build Week period, Codex was used as an engineering collaborator for the major Adaptive Decision Engine phase: repository inspection and planning, the server-side OpenAI Responses API integration, structured recommendation contract, interactive UI, validation and tests, privacy and security protections, production diagnostics, debugging, and supporting documentation. GPT-5.6 Sol now powers the live Adaptive Decision Engine in production.
 
 Key human decisions included focusing the product on an explainable daily decision, making location strictly optional, treating wildfire smoke and rapid AQI changes as first-class safety inputs, and supporting distinct visual themes without changing the underlying experience.
 
