@@ -28,7 +28,9 @@ RunFormance brings those signals together and explains its decision. It can reco
 
 ## Build Week Adaptive Decision Engine
 
-RunFormance was started from scratch on July 18, 2026, during OpenAI Build Week (July 13–21, 2026). The initial Build Week prototype established the product concept and interface, including Today, Plan, Coach, Connections, the beta waitlist, and feedback functionality.
+RunFormance was started from scratch on Friday, July 17, 2026, during OpenAI Build Week (July 13–21, 2026). The original concept brought together fitness data sources such as Apple Health, Garmin Connect, and Strava with customizable race training, cross-training, and optional weather and air-quality guidance—including rapidly changing wildfire-smoke conditions—to help runners decide when, where, and how to train. These were product goals at the project’s origin, not a claim that every integration or adaptive feature was already implemented that day.
+
+The initial Build Week prototype subsequently established the product interface, including Today, Plan, Coach, Connections, the beta waitlist, and feedback functionality. That original concept later became the foundation for the GPT-5.6 Adaptive Decision Engine.
 
 Commit `7a49b3e` is an early Build Week prototype checkpoint before the Adaptive Decision Engine was implemented. The later Build Week implementation adds a real, isolated GPT-5.6 recommendation service while preserving that initial prototype experience.
 

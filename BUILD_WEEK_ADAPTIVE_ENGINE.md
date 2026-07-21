@@ -2,7 +2,9 @@
 
 ## Build Week timeline and implementation boundary
 
-OpenAI Build Week runs July 13–21, 2026. RunFormance was started from scratch on July 18, 2026, during Build Week. The initial Build Week prototype established the RunFormance product concept and interface.
+OpenAI Build Week runs July 13–21, 2026. RunFormance was started from scratch on Friday, July 17, 2026, during Build Week. The original concept was to combine sources such as Apple Health, Garmin Connect, and Strava with cross-training, customizable race plans, and optional location-based weather and air-quality guidance. It also envisioned recommending the best time of day and indoor versus outdoor training as conditions changed, including rapid AQI changes caused by wildfire smoke.
+
+Those ideas describe the project’s July 17 origin, not a set of fully implemented integrations or adaptive features on that date. The initial Build Week prototype developed the concept into the RunFormance interface, and the later GPT-5.6 Adaptive Decision Engine implementation made live adaptive re-evaluation part of the production experience.
 
 Commit `7a49b3e` (`Add beta feedback channel`) is an early Build Week prototype checkpoint and the pre-Adaptive Decision Engine comparison point for this document. At that checkpoint, the prototype included:
 
