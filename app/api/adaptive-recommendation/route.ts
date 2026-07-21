@@ -339,10 +339,11 @@ async function createSafetyIdentifier(seed: string) {
     "SHA-256",
     new TextEncoder().encode(`runformance:${seed}`),
   );
-
-  return `rf_${Array.from(new Uint8Array(digest), (byte) =>
+  const digestHex = Array.from(new Uint8Array(digest), (byte) =>
     byte.toString(16).padStart(2, "0"),
-  ).join("")}`;
+  ).join("");
+
+  return `rf_${digestHex.slice(0, 61)}`;
 }
 
 function withSafetyCookie(

@@ -104,8 +104,16 @@ test("reuses valid safety cookies and replaces missing or malformed values", asy
     assert.equal(firstResponse.status, 200);
     assert.match(firstCookie, UUID_PATTERN);
     assert.equal(capturedModels[0], "gpt-5.6-sol");
+    assert.equal(capturedSafetyIdentifiers[0].length, 64);
+    assert.match(capturedSafetyIdentifiers[0], /^rf_[0-9a-f]{61}$/);
+    assert.ok(!capturedSafetyIdentifiers[0].includes(firstCookie));
 
-    const repeatResponse = await requestRecommendation(worker, firstCookie);
+    const repeatResponse = await requestRecommendation(worker, firstCookie, {
+      ...validContext,
+      readinessScore: 41,
+      sleepDurationHours: 5,
+      recentTrainingLoad: 275,
+    });
     assert.equal(repeatResponse.status, 200);
     assert.equal(repeatResponse.headers.get("set-cookie"), null);
     assert.equal(capturedSafetyIdentifiers[0], capturedSafetyIdentifiers[1]);
@@ -117,6 +125,11 @@ test("reuses valid safety cookies and replaces missing or malformed values", asy
     assert.match(replacementCookie, UUID_PATTERN);
     assert.notEqual(replacementCookie, "not-a-uuid");
     assert.notEqual(capturedSafetyIdentifiers[1], capturedSafetyIdentifiers[2]);
+    assert.ok(
+      capturedSafetyIdentifiers.every(
+        (identifier) => identifier.length === 64 && identifier.startsWith("rf_"),
+      ),
+    );
   } finally {
     globalThis.fetch = originalFetch;
     if (previousApiKey === undefined) {
@@ -207,7 +220,11 @@ test("keeps OpenAI API diagnostics out of client error responses", async () => {
   }
 });
 
-async function requestRecommendation(worker, safetyCookie) {
+async function requestRecommendation(
+  worker,
+  safetyCookie,
+  context = validContext,
+) {
   const headers = { "content-type": "application/json" };
   if (safetyCookie) {
     headers.cookie = `runformance-safety-id=${safetyCookie}`;
@@ -217,7 +234,7 @@ async function requestRecommendation(worker, safetyCookie) {
     new Request("http://localhost/api/adaptive-recommendation", {
       method: "POST",
       headers,
-      body: JSON.stringify(validContext),
+      body: JSON.stringify(context),
     }),
     workerEnvironment,
     executionContext,
