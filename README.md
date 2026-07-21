@@ -14,17 +14,33 @@ Runners often use several apps but still have to answer the important question t
 
 RunFormance brings those signals together and explains its decision. It can recommend the best workout window, adjust intensity, substitute cross-training, or advise an indoor session when outdoor conditions are unsafe.
 
-## Prototype capabilities
+## Implemented prototype capabilities
 
-- Unified readiness and recovery view
-- Adaptive workout recommendation with an explainable rationale
-- Custom race planning for 5K through ultra distances
-- Cross-training and recovery substitutions
-- Weather, AQI, smoke, heat, humidity, wind, UV, and pollen-aware guidance
-- Optional approximate-location controls and rapid-condition alerts
-- Apple Health, Garmin Connect, and Strava connection experience
-- Interactive coaching conversation
+- Unified readiness and recovery view using representative sample data
+- Live GPT-5.6 Sol Adaptive Decision Engine
+- Adaptive workout recommendations with an explainable rationale
+- `KEEP`, `MODIFY`, `DELAY`, and `RECOVER` recommendation outcomes
+- Editable recovery, training-load, and environmental inputs
+- Stale-recommendation detection after inputs change
+- Custom race-planning interface for 5K through ultra distances
+- Cross-training and recovery substitution experience
+- Interactive coaching interface
+- Today, Plan, Coach, and Connections views
 - Three appearance themes and responsive mobile navigation
+- Beta waitlist and beta feedback experience
+
+## Represented future integrations
+
+The following are part of the intended product experience or roadmap. Where shown in the prototype, they are representative only and are not currently live production data integrations:
+
+- Apple Health / HealthKit
+- Garmin Connect
+- Strava
+- Live weather and AQI services
+- Wildfire-smoke and rapidly changing air-quality feeds
+- Live location-based environmental guidance
+- Production OAuth
+- Automated wearable and recovery-data ingestion
 
 ## Build Week Adaptive Decision Engine
 
